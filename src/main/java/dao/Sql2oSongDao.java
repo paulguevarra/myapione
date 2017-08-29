@@ -18,7 +18,7 @@ public class Sql2oSongDao implements SongDao {
 
     @Override
     public void add(Song song) {
-        String sql = "INSERT INTO dogs (dogname, breed, color) VALUES (:dogname, :breed, :color)";
+        String sql = "INSERT INTO song (songname, genre, subgenre) VALUES (:songname, :genre, :subgenre)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql)
                     .addParameter("songname", song.getSongName())
@@ -59,7 +59,7 @@ public class Sql2oSongDao implements SongDao {
             con.createQuery(sql)
                     .addParameter("songname", newSongName )
                     .addParameter("genre", newGenre)
-                    .addParameter("subgenra", newSubgenre)
+                    .addParameter("subgenre", newSubgenre)
                     .addParameter("id", id)
                     .executeUpdate();
         } catch (Sql2oException ex) {

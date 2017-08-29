@@ -69,7 +69,7 @@ public class Sql2oSongDaoTest {
 
         songDao.update(song.getId(),"Animals", "Rock", "Folk");
         Song updatedSong = songDao.findById(song.getId());
-        assertEquals(initialSongName, updatedSong.getSongName());
+        assertNotEquals(initialSongName, updatedSong.getSongName());
     }
 
     @Test
