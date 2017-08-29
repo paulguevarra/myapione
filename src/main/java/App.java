@@ -29,14 +29,7 @@ public class App {
         conn = sql2o.open();
 
         //Create
-        post("/song/:songId/band/new", "application/json", (req, res) -> {
-            int songId = Integer.parseInt(req.params("songId"));
-            Band band = gson.fromJson(req.body(), Band.class);
-            band.setSongId(songId);
-            bandDao.add(band);
-            res.status(201);
-            return gson.toJson(band);
-        });
+
         post("/song/new", "application/json", (req, res) -> {
             Song song = gson.fromJson(req.body(), Song.class);
             songDao.add(song);
@@ -49,7 +42,6 @@ public class App {
         get("/song","application/json",(req, res)->{
             return gson.toJson(songDao.getAll());
         });
-
         get("/song/:id", "application/json", (request, response) -> {
             int songId = Integer.parseInt(request.params("id"));
             Song songToFind = songDao.findById(songId);
@@ -58,14 +50,31 @@ public class App {
             }
             return gson.toJson(songToFind);
         });
-
+        get("/band/:id/Song", "application/json",(request, response) -> {
+            int bandId = Integer.parseInt(request.params("id"));
+            List<Song> allSongs = bandDao.getAllSongsByBand(bandId);
+            return gson.toJson(allSongs);
+        });
         get("/song/:id/band", "application/json",(request, response) -> {
             int songId = Integer.parseInt(request.params("id"));
-            List<Song> allBands = bandDao.getAllSongsByBand(songId);
+            List<Band> allBands = songDao.getAllBandsBySong(songId);
             return gson.toJson(allBands);
         });
         get("/song","application/json",(request, response) -> {
             return gson.toJson(songDao.getAll());
+        });
+        get("/band","application/json",(request, response) -> {
+            return gson.toJson(bandDao.getAll());
+        });
+
+        //Update
+        post("/song/:songId/band/new", "application/json", (req, res) -> {
+            int songId = Integer.parseInt(req.params("songId"));
+            Band band = gson.fromJson(req.body(), Band.class);
+            band.setSongId(songId);
+            bandDao.add(band);
+            res.status(201);
+            return gson.toJson(band);
         });
 
         //Filter
