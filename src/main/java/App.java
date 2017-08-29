@@ -1,13 +1,18 @@
 import com.google.gson.Gson;
 import dao.Sql2oBandDao;
 import dao.Sql2oSongDao;
+import exceptions.ApiException;
+import models.Band;
 import models.Song;
 import org.sql2o.Sql2o;
 
 import org.sql2o.Connection;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static spark.Spark.*;
 
 public class App {
 
@@ -23,25 +28,59 @@ public class App {
         bandDao = new Sql2oBandDao(sql2o);
         conn = sql2o.open();
 
+        //Create
+        post("/song/:songId/band/new", "application/json", (req, res) -> {
+            int songId = Integer.parseInt(req.params("songId"));
+            Band band = gson.fromJson(req.body(), Band.class);
+            band.setSongId(songId);
+            bandDao.add(band);
+            res.status(201);
+            return gson.toJson(band);
+        });
         post("/song/new", "application/json", (req, res) -> {
             Song song = gson.fromJson(req.body(), Song.class);
             songDao.add(song);
             res.status(201);
-            res.type("application/json");
             return gson.toJson(song);
         });
 
+
+        //Read
         get("/song","application/json",(req, res)->{
-            res.type("application/json");
             return gson.toJson(songDao.getAll());
         });
 
         get("/song/:id", "application/json", (request, response) -> {
-            response.type("application/json");
             int songId = Integer.parseInt(request.params("id"));
-            return gson.toJson(songDao.findById(songId));
+            Song songToFind = songDao.findById(songId);
+            if(songToFind==null){
+                throw new ApiException(404,String.format("No songs with the id: \"&s\" exists", request.params("id")));
+            }
+            return gson.toJson(songToFind);
         });
 
+        get("/song/:id/band", "application/json",(request, response) -> {
+            int songId = Integer.parseInt(request.params("id"));
+            List<Song> allBands = bandDao.getAllSongsByBand(songId);
+            return gson.toJson(allBands);
+        });
+        get("/song","application/json",(request, response) -> {
+            return gson.toJson(songDao.getAll());
+        });
+
+        //Filter
+        exception(ApiException.class, (exception, req, res) -> {
+            ApiException err = (ApiException) exception;
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("status", err.getStatusCode());
+            jsonMap.put("errorMessage", err.getMessage());
+            res.type("application/json");
+            res.status(err.getStatusCode());
+            res.body(gson.toJson(jsonMap));
+        });
+        after((req,res)->{
+           res.type("application/json");
+        });
     }
 }
 
