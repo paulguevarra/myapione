@@ -11,6 +11,8 @@ public interface SongDao {
     //read
     List<Song> getAll();
     List<Band> getAllBandsBySong(int song);
+
+    Song findById(int id);
     //update
     void update(int id, String songName, String genre, String subgenre);
     //delete

@@ -2,13 +2,13 @@ package models;
 
 public class Band {
     private String bandName;
-    private boolean released;
+//    private boolean released;
     private int id;
     private int songId;
 
     public Band(String bandName,int songId){
         this.bandName = bandName;
-        this.released = false;
+//        this.released = false;
         this.songId = songId;
     }
 
@@ -28,13 +28,13 @@ public class Band {
         this.id = id;
     }
 
-    public boolean isReleased() {
-        return released;
-    }
-
-    public void setReleased(boolean released) {
-        this.released = released;
-    }
+//    public boolean isReleased() {
+//        return released;
+//    }
+//
+//    public void setReleased(boolean released) {
+//        this.released = released;
+//    }
 
     public int getSongId() {
         return songId;
@@ -51,7 +51,7 @@ public class Band {
 
         Band band = (Band) o;
 
-        if (released != band.released) return false;
+//        if (released != band.released) return false;
         if (id != band.id) return false;
         if (songId != band.songId) return false;
         return bandName.equals(band.bandName);
@@ -60,7 +60,7 @@ public class Band {
     @Override
     public int hashCode() {
         int result = bandName.hashCode();
-        result = 31 * result + (released ? 1 : 0);
+//        result = 31 * result + (released ? 1 : 0);
         result = 31 * result + id;
         result = 31 * result + songId;
         return result;
