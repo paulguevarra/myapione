@@ -1,20 +1,23 @@
 package dao;
 
-import models.Band;
 import models.Song;
+import models.Band;
 
 import java.util.List;
 
+
 public interface BandDao {
+
     //create
     void add(Band band);
     //read
-    List<Song> getAll();
-    List<Band> getAllBandsBySong(int song);
+    List<Band> getAll();
+    List<Song> getAllSongsByBand(int bandId);
+    //find
+    Band findById(int id);
     //update
-    void update(int id, String songName, String genre, String subgenre);
+    void update(int id, String bandName);
     //delete
-    void deleteSongById(int id);
-    void deleteAllSongs();
-
+    void deleteBandById(int id);
+    void deleteAllBands();
 }
