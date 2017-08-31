@@ -6,8 +6,8 @@ public class Song {
     private String subgenre;
     private int id;
 
-    public Song(String songName, String genre, String subgenre){
-        this.songName=songName;
+    public Song(String songname, String genre, String subgenre){
+        this.songName=songname;
         this.genre=genre;
         this.subgenre=subgenre;
     }
@@ -16,8 +16,8 @@ public class Song {
         return songName;
     }
 
-    public void setSongName(String songName) {
-        this.songName = songName;
+    public void setSongname(String songname) {
+        this.songName = songname;
     }
 
     public String getGenre() {

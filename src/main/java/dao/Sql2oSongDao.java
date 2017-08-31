@@ -2,10 +2,12 @@ package dao;
 
 import models.Band;
 import models.Song;
+import models.Writer;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sql2oSongDao implements SongDao {
@@ -91,11 +93,45 @@ public class Sql2oSongDao implements SongDao {
     }
 
     @Override
-    public List<Band> getAllBandsBySong(int songId) {
+    public List<Band> getAllBandsBySong(int songid) {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT * FROM band WHERE songId = :songid")
-                    .addParameter("songid", songId)
+                    .addParameter("songid", songid)
                     .executeAndFetch(Band.class);
         }
     }
+    @Override
+    public List<Writer> getAllWritersBySong(int songid){
+        ArrayList<Writer> writer = new ArrayList<>();
+        String joinQuery = "SELECT writerid FROM song_writer WHERE songid = :songid";
+        try (Connection con = sql2o.open()) {
+            List<Integer> allWritersIds = con.createQuery(joinQuery)
+                    .addParameter("songid", songid)
+                    .executeAndFetch(Integer.class);
+            for (Integer writerid : allWritersIds) {
+                String writerQuery = "SELECT * FROM writer WHERE id = :writerid";
+                writer.add(
+                        con.createQuery(writerQuery)
+                                .addParameter("writerid", writerid)
+                                .throwOnMappingFailure(false)
+                                .executeAndFetchFirst(Writer.class));
+            }
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+        return writer;
+    }
+    @Override
+    public void addSongToWriter(Song song, Writer writer){
+        String sql = "INSERT INTO song_writer (songid, writerid) VALUES (:songid, :writerid)";
+            try (Connection con = sql2o.open()){
+                con.createQuery(sql)
+                        .addParameter("songid",song.getId())
+                        .addParameter("writer", writer.getId())
+                        .executeUpdate();
+            }catch (Sql2oException ex){
+                System.out.println(ex);
+            }
+    }
+
 }
