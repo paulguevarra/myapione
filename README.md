@@ -28,7 +28,9 @@ _This web application will demonstrate one-to-many and many-to-many relationship
 ![image of postman1](https://github.com/paulguevarra/myapione/src/main/resources/public/images/music_postman5.tff?raw=true)
 | Gather all Songs in database | enter numerous Songs   | retrieve all Songs |
 ![image of postman1](https://github.com/paulguevarra/myapione/src/main/resources/public/images/music_postman2.tff?raw=true)
-| Gather all Bands in database | enter numerous Bands   | retrieve all Bands |
+| Create a new Writer object | enter numerous Bands   | retrieve all Bands |
+| Create relationships between multiple writers and multiple songs | object A to Object b   | Object A to Object B and C  |
+| Search songs by hits subclass sales| Songs that sold $40,000   | retrieve all Songs with criteria |
 ## Known bugs
 _some methods not yet added to application defined in Dao_
 
