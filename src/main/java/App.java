@@ -103,21 +103,22 @@ public class App {
             res.status(201);
             return gson.toJson(band);
         });
-        post("/writer/:writerid/song/new", "application/json", (req, res) -> {
-            int writerid = Integer.parseInt(req.params("writerid"));
-            Song song = gson.fromJson(req.body(), Song.class);
-            song.setId(writerid);
-            songDao.add(song);
-            res.status(201);
-            return gson.toJson(song);
-        });
-        post("/song/:songId/writer/new", "application/json", (req, res) -> {
+        get("/writer/:writerid/song/:songId", "application/json", (req, res) -> {
             int songId = Integer.parseInt(req.params("songId"));
-            Writer writer = gson.fromJson(req.body(), Writer.class);
-            writer.setWriterId(songId);
-            writerDao.addWriterToSong(songId);
+            int writerId = Integer.parseInt(req.params("writerid"));
+            Writer writer = writerDao.findById(writerId);
+            Song song = songDao.findById(songId);
+            songDao.addSongToWriter(song,writer);
             res.status(201);
-            return gson.toJson(writer);
+            return gson.toJson(writerDao.getAllSongsByWriter(writerId));
+        get("/song/:songId/writer/:writerId", "application/json", (req, res) -> {
+            int songId = Integer.parseInt(req.params("songId"));
+            int writerId = Integer.parseInt(req.params("writerid"));
+            Writer writer = writerDao.findById(writerId);
+            Song song = songDao.findById(songId);
+            writerDao.addWriterToSong(writer,song);
+            res.status(201);
+            return gson.toJson(songDao.getAllWritersBySong(songId));
         });
         //get: delete song by Id
         get("/song/:songId/delete", "application/json", (req, res) -> {
