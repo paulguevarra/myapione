@@ -72,25 +72,29 @@ public class Sql2oSongDao implements SongDao {
     @Override
     public void deleteSongById(int id) {
         String sql = "DELETE from song WHERE id=:id";
+        String deleteJoined = "DELETE from song_writer WHERE songid=:songid";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
-        } catch (Sql2oException ex){
+            con.createQuery(deleteJoined)
+                    .addParameter("songid", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
             System.out.println(ex);
         }
     }
 
-    @Override
-    public void deleteAllSongs() {
-        String sql = "DELETE from song";
-        try (Connection con = sql2o.open()) {
-            con.createQuery(sql)
-                    .executeUpdate();
-        } catch (Sql2oException ex){
-            System.out.println(ex);
-        }
-    }
+//    @Override
+//    public void deleteAllSongs() {
+//        String sql = "DELETE from song";
+//        try (Connection con = sql2o.open()) {
+//            con.createQuery(sql)
+//                    .executeUpdate();
+//        } catch (Sql2oException ex){
+//            System.out.println(ex);
+//        }
+//    }
 
     @Override
     public List<Band> getAllBandsBySong(int songid) {
@@ -127,7 +131,7 @@ public class Sql2oSongDao implements SongDao {
             try (Connection con = sql2o.open()){
                 con.createQuery(sql)
                         .addParameter("songid",song.getId())
-                        .addParameter("writer", writer.getId())
+                        .addParameter("writer", writer.getWriterId())
                         .executeUpdate();
             }catch (Sql2oException ex){
                 System.out.println(ex);

@@ -108,9 +108,10 @@ public class App {
             int writerId = Integer.parseInt(req.params("writerid"));
             Writer writer = writerDao.findById(writerId);
             Song song = songDao.findById(songId);
-            songDao.addSongToWriter(song,writer);
+            songDao.addSongToWriter(song, writer);
             res.status(201);
             return gson.toJson(writerDao.getAllSongsByWriter(writerId));
+        });
         get("/song/:songId/writer/:writerId", "application/json", (req, res) -> {
             int songId = Integer.parseInt(req.params("songId"));
             int writerId = Integer.parseInt(req.params("writerid"));

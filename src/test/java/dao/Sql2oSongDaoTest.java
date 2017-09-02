@@ -80,16 +80,16 @@ public class Sql2oSongDaoTest {
         assertEquals(0, songDao.getAll().size());
     }
 
-    @Test
-    public void clearAllClearsAll() throws Exception {
-        Song song = setupSong();
-        Song otherSong = new Song("Simple Man", "Rock", "Southern Rock");
-        songDao.add(song);
-        songDao.add(otherSong);
-        int daoSize = songDao.getAll().size();
-        songDao.deleteAllSongs();
-        assertTrue(daoSize > 0 && daoSize > songDao.getAll().size());
-    }
+//    @Test
+//    public void clearAllClearsAll() throws Exception {
+//        Song song = setupSong();
+//        Song otherSong = new Song("Simple Man", "Rock", "Southern Rock");
+//        songDao.add(song);
+//        songDao.add(otherSong);
+//        int daoSize = songDao.getAll().size();
+//        songDao.deleteAllSongs();
+//        assertTrue(daoSize > 0 && daoSize > songDao.getAll().size());
+//    }
 
     @Test
     public void getAllBandsBySingReturnsBandCorrectly() throws Exception {

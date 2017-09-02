@@ -19,6 +19,6 @@ public interface SongDao {
     void update(int id, String songName, String genre, String subgenre);
     //delete
     void deleteSongById(int id);
-    void deleteAllSongs();
+//    void deleteAllSongs();
 
 }

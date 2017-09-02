@@ -19,13 +19,15 @@ public class Sql2oWriterDao implements WriterDao{
 
     @Override
     public void add(Writer writer) {
-        String sql = "INSERT INTO writer (writername) VALUES (:writername";
+        String sql = "INSERT INTO writer (writername) VALUES (:writername)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql)
+                    .addParameter("writername", writer.getName())
+                    .addColumnMapping("WRITERNAME", "writername")
                     .bind(writer)
                     .executeUpdate()
                     .getKey();
-            writer.setWriterId(id);
+            writer.setId(id);
         } catch (Sql2oException ex) {
             System.out.println(ex);
         }
@@ -45,6 +47,19 @@ public class Sql2oWriterDao implements WriterDao{
             return con.createQuery("SELECT * FROM writer WHERE id = :id")
                     .addParameter("id", id)
                     .executeAndFetchFirst(Writer.class);
+        }
+    }
+
+    @Override
+    public void updateName(int id, String newname) {
+        String sql = "UPDATE writer SET (writername) = (:writername) WHERE id=:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("writername", newname)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
         }
     }
 
@@ -85,24 +100,14 @@ public class Sql2oWriterDao implements WriterDao{
         }
         return song;
     }
-    @Override
-    public void updateName(String name) {
-        String sql = "UPDATE name SET (name) = (:name) WHERE id=:id";
-        try (Connection con = sql2o.open()) {
-            con.createQuery(sql)
-                    .addParameter("name", name)
-                    .executeUpdate();
-        } catch (Sql2oException ex) {
-            System.out.println(ex);
-        }
-    }
+
     @Override
     public void addWriterToSong(Writer writer, Song song){
         String sql = "INSERT INTO song_writer (songid, writerid) VALUES (:songid, :writerid)";
         try (Connection con = sql2o.open()){
             con.createQuery(sql)
                     .addParameter("songid",song.getId())
-                    .addParameter("writer", writer.getWriterId())
+                    .addParameter("writerid", writer.getWriterId())
                     .executeUpdate();
         }catch (Sql2oException ex){
             System.out.println(ex);

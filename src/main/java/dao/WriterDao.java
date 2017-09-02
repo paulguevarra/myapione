@@ -16,7 +16,7 @@ public interface WriterDao {
 
         Writer findById(int id);
         //update
-        void updateName(String writername);
+        void updateName(int writerid, String writername);
         //delete
         void deleteById(int id);
 //        void deleteAll();

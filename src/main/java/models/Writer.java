@@ -2,7 +2,7 @@ package models;
 
 public class Writer {
     private String writername;
-    private int id;
+    private int writerid;
     public Writer(String writername){
         this.writername=writername;
     }
@@ -16,11 +16,11 @@ public class Writer {
     }
 
     public int getWriterId() {
-        return id;
+        return writerid;
     }
 
-    public void setWriterId(int id) {
-        this.id = id;
+    public void setId(int id) {
+        this.writerid = id;
     }
 
     @Override
@@ -30,14 +30,14 @@ public class Writer {
 
         Writer writer = (Writer) o;
 
-        if (id != writer.id) return false;
+        if (writerid != writer.writerid) return false;
         return writername.equals(writer.writername);
     }
 
     @Override
     public int hashCode() {
         int result = writername.hashCode();
-        result = 31 * result + id;
+        result = 31 * result + writerid;
         return result;
     }
 }
