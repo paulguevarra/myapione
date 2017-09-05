@@ -123,15 +123,15 @@ public class App {
         });
         //get: delete song by Id
         get("/song/:songId/delete", "application/json", (req, res) -> {
-            int movieId = Integer.parseInt(req.params("songId"));
-            songDao.deleteSongById(movieId);
+            int songId = Integer.parseInt(req.params("songId"));
+            songDao.deleteSongById(songId);
             return gson.toJson(songDao.getAll());
         });
 
         //get: delete writer by Id
         get("/writer/:writerId/delete", "application/json", (req, res) -> {
-            int movieTypeId = Integer.parseInt(req.params("writerId"));
-            writerDao.deleteById(movieTypeId);
+            int writerId = Integer.parseInt(req.params("writerId"));
+            writerDao.deleteById(writerId);
             return gson.toJson(writerDao.getAll());
         });
 
@@ -142,10 +142,9 @@ public class App {
             hitDao.add(hit);
             res.status(201);
             res.type("application/joson");
-            String publishedrank = hit.getPublishedRank();
-            int year = Integer.parseInt(publishedrank);
-            if (year <= 2017) {
-                throw new ApiException(404, String.format("Year should be greater than 2017"));
+            int havesoldeawk = hit.getHaveSoldEaWk();
+            if (havesoldeawk <= 40000) {
+                throw new ApiException(404, String.format("Try an amount greater than 40,000"));
             }
             return gson.toJson(hit);
         });
