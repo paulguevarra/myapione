@@ -141,7 +141,7 @@ public class App {
             Hit hit = gson.fromJson(req.body(), Hit.class);
             hitDao.add(hit);
             res.status(201);
-            res.type("application/joson");
+            res.type("application/json");
             int havesoldeawk = hit.getHaveSoldEaWk();
             if (havesoldeawk <= 40000) {
                 throw new ApiException(404, String.format("Try an amount greater than 40,000"));
