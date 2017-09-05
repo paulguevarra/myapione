@@ -41,6 +41,7 @@ public class Sql2oSongDao implements SongDao {
     public List<Song> getAll() {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT * FROM song")
+                    .throwOnMappingFailure(false)
                     .executeAndFetch(Song.class);
         }
     }
@@ -50,6 +51,7 @@ public class Sql2oSongDao implements SongDao {
         try(Connection con = sql2o.open()){
             return con.createQuery("SELECT * FROM song WHERE id = :id")
                     .addParameter("id", id)
+                    .throwOnMappingFailure(false)
                     .executeAndFetchFirst(Song.class);
         }
     }

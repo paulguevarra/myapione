@@ -16,10 +16,19 @@ public class Sql2oHitDao implements HitDao {
 
     @Override
     public void add(Hit hit) {
-        String sql = "INSERT INTO song (songname, genre, subgenre, haveSoldEaWk, publishedrank) VALUES (:songname, :genre, :subgenre, :havesoldeawk, :publishedrank)";
+        String sql = "INSERT INTO song (songname, genre, subgenre, havesoldeawk, publishedrank) VALUES (:songname, :genre, :subgenre, :havesoldeawk, :publishedrank)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql)
-                    .bind(hit)
+                    .addParameter("songname", hit.getSongName())
+                    .addParameter("genre", hit.getGenre())
+                    .addParameter("subgenre", hit.getSubgenre())
+                    .addParameter("havesoldeawk", hit.getHaveSoldEaWk())
+                    .addParameter("publishedrank", hit.getPublishedRank())
+                    .addColumnMapping("SONGNAME", "songname")
+                    .addColumnMapping("GENRE", "genre")
+                    .addColumnMapping("SUBGENRE", "subgenre")
+                    .addColumnMapping("HAVESOLDEAWK", "havesoldeawk")
+                    .addColumnMapping("PUBLISHEDRANK", "publishedrank")
                     .throwOnMappingFailure(false)
                     .executeUpdate()
                     .getKey();
@@ -29,6 +38,13 @@ public class Sql2oHitDao implements HitDao {
         }
     }
 
+//    @Override
+//    public List<Hit> getAllHits(){
+//        try Connection con = sql2o.open(){
+//            return con.createQuery("SELECT * FROM song WHERE ahit = :ahit")
+//                    .addParameter()
+//        }
+//    } boolean
 
     @Override
     public List<Hit> getAllByWeeklySoldAmt(Integer havesoldeawk) {
@@ -75,7 +91,6 @@ public class Sql2oHitDao implements HitDao {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT * FROM song WHERE id = :id")
                     .addParameter("id", id)
-                    .throwOnMappingFailure(false)
                     .executeAndFetchFirst(Hit.class);
         }
     }

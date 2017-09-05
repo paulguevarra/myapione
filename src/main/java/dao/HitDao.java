@@ -9,6 +9,7 @@ public interface HitDao {
     void add(Hit hit);
 
     // Read
+//    List<Hit> getAllHits();
     List<Hit> getAllByWeeklySoldAmt(Integer havesoldeawk);
     List<Hit> getAllByPublishRankList(String publishedrank);
     Hit findHitBySales(Integer havesoldeawk);

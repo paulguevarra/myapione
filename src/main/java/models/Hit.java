@@ -4,11 +4,21 @@ public class Hit extends Song {
     private Integer haveSoldEaWk;
     private int id;
     private String publishedRank;
+//    private Boolean aHit;
     public Hit(String songname, String genre, String subgenre, Integer havesoldeawk, String publishedrank){
         super(songname, genre, subgenre);
         this.haveSoldEaWk=havesoldeawk;
         this.publishedRank=publishedrank;
+//        this.aHit = aHit;
     }
+
+//    public Boolean getaHit() {
+//        return aHit;
+//    }
+//
+//    public void setaHit(Boolean aHit) {
+//        this.aHit = aHit;
+//    }
 
     public Integer getHaveSoldEaWk() {
         return haveSoldEaWk;
